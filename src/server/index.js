@@ -1,5 +1,5 @@
 const dotenv = require('dotenv');
-dotenv.config = require("../../.env")
+dotenv.config({ path: "./.env" });
 
 //modules
 const path = require('path');
