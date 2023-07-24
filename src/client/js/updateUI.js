@@ -57,8 +57,6 @@ async function getGeoData(city){
 //getting weather data from local endpoint
 
 async function getWeatherData(lat, lng){
-    const lat = geoNamesData.lat;
-    const lng = geoNamesData.lng;
 
     return fetch(`${pathWeatherbit}?lat=${lat}&lng=${lng}`)
         .then(response => response.json())
