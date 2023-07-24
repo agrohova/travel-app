@@ -1,0 +1,52 @@
+header {
+    display: grid;
+    grid-template-rows: auto;
+    justify-items: center;
+    overflow: auto; 
+    font-size: 18px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: bold;
+    color: #60043d;
+    line-height: 1.5;
+    background: #86c6b9;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    
+}
+
+main {
+    display: grid;
+    grid-template-rows: auto;
+    justify-items: center;
+    overflow: auto; 
+    background: #a97d85;
+    font-size: 18px;
+    font-family: 'Oswald', sans-serif;
+}
+
+form {
+    display: grid;
+    grid-template-rows: auto;
+    justify-items: center;
+    overflow: auto; 
+    font-size: 18px;
+    font-family: 'Oswald', sans-serif;
+}
+
+.tripInfo {
+    display: grid;
+    grid-template-rows: auto;
+    justify-items: center;
+    overflow: auto; 
+    font-size: 18px;
+    font-family: 'Oswald', sans-serif;
+}
+
+footer {
+    font-size: 18px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: bold;
+    color: #60043d;
+    line-height: 1.5;
+    background: #86c6b9;
+}
