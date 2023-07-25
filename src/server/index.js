@@ -37,6 +37,7 @@ async function getGeoData(req, res){
         console.log('You are travelling to: ', city);
         const result = await getGeoNamesData(city);
         console.log('Geonames API response: ', result);
+        res.setHeader('Content-Type', 'application/json');
 
         res.send(result);
         
