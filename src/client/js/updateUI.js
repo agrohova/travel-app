@@ -16,7 +16,7 @@ async function tripInfo(event){
     try {
         geonamesData = await getGeoData(city); 
         weatherbitData = await getWeatherData(geonamesData.lat, geonamesData.lng); 
-        pixabayData = await getPic(geonamesData);
+        pixabayData = await getPic(geonamesData.city, geonamesData.country);
         tripCountdown = timeToDep(tripDate)
 
         updateUI(geonamesData, weatherbitData, pixabayData, timeInDays)
@@ -56,10 +56,8 @@ async function getGeoData(city) {
 
 //getting weather data from local endpoint
 
-async function getWeatherData(geonamesData) {
+async function getWeatherData(lat, lng) {
     try {
-        const lat = geonamesData.lat;
-        const lng = geonamesData.lng;
         const response = await fetch(`http://localhost:4000/weather?lat=${lat}&lng=${lng}`, {
             method: 'GET',
             credentials: 'same-origin',
@@ -82,11 +80,8 @@ async function getWeatherData(geonamesData) {
 
 //getting pixabay picture from local endpoint
 
-async function getPic(geonamesData) {
+async function getPic(city, country) {
     try {
-        const city = geonamesData.city;
-        const country = geonamesData.country;
-
         const response = await fetch(`http://localhost:4000/pixabay?city=${city}&country=${country}`, {
             method: 'GET',
             credentials: 'same-origin',
