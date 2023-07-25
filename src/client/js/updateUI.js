@@ -7,6 +7,7 @@ async function tripInfo(event){
     let geonamesData = {}; // hold the API data in a data object
     let pixabayData = {};
     let weatherbitData = {};
+    let timeInDays = '';
     let city = document.getElementById('destCity').value; // taking user data from the UI
     let tripDate = document.getElementById('depDate').value;
 
@@ -14,11 +15,11 @@ async function tripInfo(event){
 
     try {
         geonamesData = await getGeoData(city); 
-        weatherbitData = await getWeatherData(geonamesData.lat, geonamesData.lng); 
-        pixabayData = await getPic(geonamesData.city);
+        weatherbitData = await getWeatherData(geonamesData.lat, geonamesData.lng, timeInDays); 
+        pixabayData = await getPic(geonamesData);
         tripCountdown = timeToDep(tripDate)
 
-        updateUI(geonamesData, weatherbitData, pixabayData, tripCountdown)
+        updateUI(geonamesData, weatherbitData, pixabayData, timeInDays)
     } catch (error) {
         console.log('Error in translating the trip info into the UI: ', error);
         return;
@@ -64,9 +65,11 @@ async function getGeoData(city){
 
 //getting weather data from local endpoint
 
-async function getWeatherData(lat, lng) {
+async function getWeatherData(geonamesData, timeInDays) {
     try {
-        const response = await fetch(`http://localhost:4000/weather?lat=${lat}&lng=${lng}`, {
+        const lat = geonamesData.lat;
+        const lng = geonamesData.lng;
+        const response = await fetch(`http://localhost:4000/weather?lat=${lat}&lng=${lng}&departure=${timeInDays}`, {
             method: 'GET',
             credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },
@@ -143,8 +146,8 @@ async function getPic(geonamesData){
 */
 
 // Function to update the UI with trip information
-function updateUI(geonamesData, weatherbitData, pixabayData, tripCountdown) {
-    document.getElementById('tripCountdown').innerHTML = `You are departing on your trip in ${tripCountdown.timeinDays} days`
+function updateUI(geonamesData, weatherbitData, pixabayData, timeInDays) {
+    document.getElementById('tripCountdown').innerHTML = `You are departing on your trip in ${timeInDays} days`
     document.getElementById('weatherInfo').innerHTML = `Weather in ${geonamesData.city},${geonamesData.country} in the last 7 days: min. temperature: ${weatherbitData.min_temp}°C, max. temperature: ${weatherbitData.max_temp}°C, weather description: ${weatherbitData.weather_description}`;
     document.getElementById('picInfo').innerHTML = `<img src="${pixabayData.imageURL}" alt="City Image">`;
 }

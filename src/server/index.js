@@ -77,15 +77,17 @@ async function getWeatherData(req, res){
     try {
         const lat = req.query.lat;
         const lng = req.query.lng;
-        console.log(`Following geo data are being past to Weatherbit: Lat: ${lat}, Lng: ${lng}`);
+        const departure = req.query.departure; //is this correct?
+        const days = parseInt(departure);
+        console.log(`Following geo data are being past to Weatherbit: Lat: ${lat}, Lng: ${lng}, Days: ${days}`);
 
-        const result = await getWeatherbitData(lat, lng); // retrieving weather data using lat, lng from previous function
+        const result = await getWeatherbitData(lat, lng, days); // retrieving weather data using lat, lng from previous function
         console.log('Weatherbit API response: ', result);
 
         res.send(result);
 
     } catch (error) {
-        console.log('error in getWeatherData(lat, lng): ', error);
+        console.log('error in getWeatherData(lat, lng, days): ', error);
         res.send(error);
     }
 }
