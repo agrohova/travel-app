@@ -165,7 +165,4 @@ async function getPixabayData(picCity, picCountry){
 
 //exports
 
-module.exports = {
-    server,
-    app
-};
+module.exports = { app };
