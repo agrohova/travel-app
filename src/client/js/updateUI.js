@@ -87,7 +87,7 @@ async function getPic(geonamesData) {
         const city = geonamesData.city;
         const country = geonamesData.country;
 
-        const response = await fetch(`http://localhost:4000//pixabay?city=${city}&country=${country}`, {
+        const response = await fetch(`http://localhost:4000/pixabay?city=${city}&country=${country}`, {
             method: 'GET',
             credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },

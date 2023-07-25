@@ -133,23 +133,14 @@ async function getPixabayData(city, country){
         const data = await response.json();
         if(data.hits.length > 0){ // This happens when we get a normal city response
             return {
-                destination: city,
-                imageURL: data.hits[0].fullHDURL
+                imageURL: data.hits[0].webformatURL
             };
         }
-
         if(data.hits.length === 0){ // If there's no response for the city, we're accessing URL2 for country
             const response2 = await fetch(pixabayURL2);
             const data2 = await response2.json();
             return {
-                destination: country,
-                imageURL: data2.hits[0].fullHDURL
-            };
-        }
-        if(data.hits.length > 0){ // This happens when we get a normal city response
-            return {
-                destination: city,
-                imageURL: data.hits[0].fullHDURL
+                imageURL: data2.hits[0].webformatURL
             };
         }
     } catch (error) {
