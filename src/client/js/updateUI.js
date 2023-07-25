@@ -65,11 +65,10 @@ async function getGeoData(city){
 
 //getting weather data from local endpoint
 
-async function getWeatherData(geonamesData, timeInDays) {
+async function getWeatherData(geonamesData) {
     try {
-        const lat = geonamesData.lat;
-        const lng = geonamesData.lng;
-        const response = await fetch(`http://localhost:4000/weather?lat=${lat}&lng=${lng}&departure=${timeInDays}`, {
+        const { lat, lng } = geonamesData;
+        const response = await fetch(`http://localhost:4000/weather?lat=${lat}&lng=${lng}`, {
             method: 'GET',
             credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },

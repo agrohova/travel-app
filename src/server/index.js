@@ -73,40 +73,72 @@ const baseURL2 = "https://api.weatherbit.io/v2.0/forecast/daily?";
 
 app.get('/weather', getWeatherData);
 
+async function getWeatherData(req, res) {
+    try {
+        const { lat, lng } = req.query; // Extract lat and lng from the request query
+        console.log(`Following geo data are being passed to Weatherbit: Lat: ${lat}, Lng: ${lng}`);
+
+        const result = await getWeatherbitData(lat, lng); // Pass lat and lng to getWeatherbitData
+        console.log('Weatherbit API response:', result);
+
+        res.send(result);
+    } catch (error) {
+        console.log('Error in getWeatherData:', error);
+        res.send(error);
+    }
+}
+
+async function getWeatherbitData(lat, lng) {
+    const weatherbitURL = `${baseURL2}lat=${lat}&lon=${lng}&key=${apiKey2}`;
+    try {
+        const response = await fetch(weatherbitURL);
+        
+        const data = await response.json();
+        return {
+            max_temp: data.data[0].max_temp,
+            min_temp: data.data[0].min_temp,
+            weather_description: data.data[0].weather.description
+        };
+    } catch (error) {
+        console.log('Weatherbit API response error:', error);
+        throw error;
+    }
+}
+
+/*
 async function getWeatherData(req, res){
     try {
-        const lat = req.query.lat;
-        const lng = req.query.lng;
-        const departure = req.query.departure; //is this correct?
-        const days = parseInt(departure);
-        console.log(`Following geo data are being past to Weatherbit: Lat: ${lat}, Lng: ${lng}, Days: ${days}`);
+        const lat = data.lat;
+        const lng = data.lng;
+        console.log(`Following geo data are being passed to Weatherbit: Lat: ${lat}, Lng: ${lng}`);
 
-        const result = await getWeatherbitData(lat, lng, days); // retrieving weather data using lat, lng from previous function
+        const result = await getWeatherbitData(lat, lng); // retrieving weather data using lat, lng from previous function
         console.log('Weatherbit API response: ', result);
 
         res.send(result);
 
     } catch (error) {
-        console.log('error in getWeatherData(lat, lng, days): ', error);
+        console.log('error in getWeatherData(lat, lng): ', error);
         res.send(error);
     }
 }
 
-async function getWeatherbitData(lat, lng, days){
+async function getWeatherbitData(lat, lng){
     const weatherbitURL = `${baseURL2}lat=${lat}&lon=${lng}&key=${apiKey2}`;
     try {
         const response = await fetch(weatherbitURL);
         const data = await response.json();
         return {
-            max_temp: data.data[days].max_temp,
-            min_temp: data.data[days].min_temp,
-            weather_description: data.data[days].weather.description
+            max_temp: data.data[0].max_temp,
+            min_temp: data.data[0].min_temp,
+            weather_description: data.data[0].weather.description
         };
     } catch (error) {
         console.log('Weatherbit API response error: ', error);
         throw error;
     }
 }
+*/
 
 // Pixabay API
 const apiKey3 = process.env.API_KEY3;
