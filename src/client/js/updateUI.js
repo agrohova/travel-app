@@ -15,7 +15,7 @@ async function tripInfo(event){
 
     try {
         geonamesData = await getGeoData(city); 
-        weatherbitData = await getWeatherData(geonamesData.lat, geonamesData.lng, timeInDays); 
+        weatherbitData = await getWeatherData(geonamesData.lat, geonamesData.lng); 
         pixabayData = await getPic(geonamesData);
         tripCountdown = timeToDep(tripDate)
 
@@ -41,9 +41,9 @@ async function getGeoData(city) {
             console.log('Geonames retrieved response: ', data);
             
            // Call the getWeatherData function with lat and lng parameters
-           const weatherData = await getWeatherData(data.lat, data.lng);
-           console.log('Weather data:', weatherData);
-           return weatherData;
+           const weatherbitData = await getWeatherData(data.lat, data.lng);
+           console.log('Weather data:', weatherbitData);
+           return weatherbitData;
        } else {
            console.log('Error retrieving data from getGeoData: Invalid response');
            return null;
@@ -54,24 +54,12 @@ async function getGeoData(city) {
    }
 }
 
-/*
-async function getGeoData(city){
-    return fetch(`/geo?city=${city}`)
-    .then(response => response.json())
-    .then(data => {
-        console.log('Geonames retrieved response: ', data);
-        return data;
-    })
-    .catch(error => {
-        console.log('Error retrieving data from getGeoData: ', error);
-    })
-}*/
-
 //getting weather data from local endpoint
 
 async function getWeatherData(geonamesData) {
     try {
-        const { lat, lng } = geonamesData;
+        const lat = geonamesData.lat;
+        const lng = geonamesData.lng;
         const response = await fetch(`http://localhost:4000/weather?lat=${lat}&lng=${lng}`, {
             method: 'GET',
             credentials: 'same-origin',
@@ -91,18 +79,6 @@ async function getWeatherData(geonamesData) {
         throw error;
     }
 }
-/*
-async function getWeatherData(lat, lng){
-    return fetch(`/weather?lat=${lat}&lng=${lng}`)
-    .then(response => response.json())
-    .then(data => {
-        console.log('Weatherbit retrieved response: ', data);
-        return data;
-    })
-    .catch(error => {
-        console.log('Error retrieving data from getWeatherData: ', error);
-    })
-}*/
 
 //getting pixabay picture from local endpoint
 
@@ -130,23 +106,6 @@ async function getPic(geonamesData) {
         throw error;
     }
 }
-
-/*
-async function getPic(geonamesData){
-    const city = geonamesData.city;
-    const country = geonamesData.country;
-
-    return fetch(`/pixabay?city=${city}&country=${country}`)
-    .then(response => response.json())
-    .then(data => {
-        console.log('Pixabay retrieved response: ', data);
-        return data;
-    })
-    .catch(error => {
-        console.log('Error retrieving data from getPic: ', error);
-    })
-}
-*/
 
 // Function to update the UI with trip information
 function updateUI(geonamesData, weatherbitData, pixabayData, timeInDays) {

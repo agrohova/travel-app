@@ -19,7 +19,7 @@ app.listen(4000, function () {
   console.log('Example app listening on port 4000!')
 })
 
-//define HTTP GET rout
+//define HTTP GET route
 
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '../../dist/index.html'))
@@ -100,41 +100,6 @@ async function getWeatherbitData(lat, lng) {
     }
 }
 
-/*
-async function getWeatherData(req, res){
-    try {
-        const lat = data.lat;
-        const lng = data.lng;
-        console.log(`Following geo data are being passed to Weatherbit: Lat: ${lat}, Lng: ${lng}`);
-
-        const result = await getWeatherbitData(lat, lng); // retrieving weather data using lat, lng from previous function
-        console.log('Weatherbit API response: ', result);
-
-        res.send(result);
-
-    } catch (error) {
-        console.log('error in getWeatherData(lat, lng): ', error);
-        res.send(error);
-    }
-}
-
-async function getWeatherbitData(lat, lng){
-    const weatherbitURL = `${baseURL2}lat=${lat}&lon=${lng}&key=${apiKey2}`;
-    try {
-        const response = await fetch(weatherbitURL);
-        const data = await response.json();
-        return {
-            max_temp: data.data[0].max_temp,
-            min_temp: data.data[0].min_temp,
-            weather_description: data.data[0].weather.description
-        };
-    } catch (error) {
-        console.log('Weatherbit API response error: ', error);
-        throw error;
-    }
-}
-*/
-
 // Pixabay API
 const apiKey3 = process.env.API_KEY3;
 const baseURL3 = "https://pixabay.com/api/?";
@@ -143,11 +108,11 @@ app.get('/pixabay', getPic);
 
 async function getPic(req, res){
     try {
-        const picCity = req.query.city;
-        const picCountry = req.query.country;
-        console.log(`Pixabay API request for : city ${picCity}, country: ${picCountry}`);
+        const city = req.query.city;
+        const country = req.query.country;
+        console.log(`Pixabay API request for : city ${city}, country: ${country}`);
 
-        const result = await getPixabayData(picCity, picCountry);
+        const result = await getPixabayData(city, country);
         console.log('Pixabay API response: ', result);
 
         res.send(result);
@@ -158,32 +123,32 @@ async function getPic(req, res){
     }
 }
 
-async function getPixabayData(picCity, picCountry){
+async function getPixabayData(city, country){
 
-    const pixabayURL = `${baseURL3}key=${apiKey3}&q=${picCity}&image_type=photo`;     // URL for destination city
-    const pixabayURL2 = `${baseURL3}key=${apiKey3}&q=${picCountry}&image_type=photo`; //URL for destination country, if city is too obscure
+    const pixabayURL = `${baseURL3}key=${apiKey3}&q=${city}&image_type=photo`;     // URL for destination city
+    const pixabayURL2 = `${baseURL3}key=${apiKey3}&q=${country}&image_type=photo`; //URL for destination country, if city is too obscure
 
     try {
         const response = await fetch(pixabayURL);
         const data = await response.json();
-        if(data.hits.length > 0){ // This happens when we get a normal picCity response
+        if(data.hits.length > 0){ // This happens when we get a normal city response
             return {
-                destination: picCity,
+                destination: city,
                 imageURL: data.hits[0].fullHDURL
             };
         }
 
-        if(data.hits.length === 0){ // If there's no response for the picCity, we're accessing URL2 for picCountry
+        if(data.hits.length === 0){ // If there's no response for the city, we're accessing URL2 for country
             const response2 = await fetch(pixabayURL2);
             const data2 = await response2.json();
             return {
-                destination: picCountry,
+                destination: country,
                 imageURL: data2.hits[0].fullHDURL
             };
         }
-        if(data.hits.length > 0){ // This happens when we get a normal picCity response
+        if(data.hits.length > 0){ // This happens when we get a normal city response
             return {
-                destination: picCity,
+                destination: city,
                 imageURL: data.hits[0].fullHDURL
             };
         }
