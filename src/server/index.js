@@ -27,7 +27,7 @@ app.get('/', function (req, res) {
 
 // Geonames API
 const userName1 = process.env.USER_NAME1;
-const baseURL1 = "https://api.geonames.org/citiesJSON?";
+const baseURL1 = "http://api.geonames.org/searchJSON?";
 
 app.get('/geo', getGeoData);
 

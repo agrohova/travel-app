@@ -26,7 +26,29 @@ async function tripInfo(event){
 }
 
 //getting geo data from local endpoint
+async function getGeoData(city) {
+    try {
+        const response = await fetch(`/geo?city=${city}`);
+        const headers = response.headers
+        const contentType = headers.get('Content-Type')
+        console.log('Content-Type:', contentType);
+        const data = await response.json();
 
+        // Check if the response contains valid data
+        if (data && data.lat !== undefined && data.lng !== undefined) {
+            console.log('Geonames retrieved response: ', data);
+            return data;
+        } else {
+            console.log('Error retrieving data from getGeoData: Invalid response');
+            return null;
+        }
+    } catch (error) {
+        console.log('Error retrieving data from getGeoData: ', error);
+        return null;
+    }
+}
+
+/*
 async function getGeoData(city){
     return fetch(`/geo?city=${city}`)
     .then(response => response.json())
@@ -37,8 +59,7 @@ async function getGeoData(city){
     .catch(error => {
         console.log('Error retrieving data from getGeoData: ', error);
     })
-}
-
+}*/
 //getting weather data from local endpoint
 
 async function getWeatherData(lat, lng){

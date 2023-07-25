@@ -14,8 +14,8 @@ console.log('today is ' + todaysDate());
 
 
 //function to obtain time to departure
-function timeToDep(tripDate) {
 
+function timeToDep(tripDate) {
     let dateFuture = new Date(tripDate);
     let todayDate = new Date();
     let dateDiff = dateFuture - todayDate;
@@ -24,7 +24,11 @@ function timeToDep(tripDate) {
     return timeInDays //this says how many days do we have left till the departure
 }
 
-console.log('You are departing on your trip in ' + timeinDays + 'days')
+document.getElementById("save-btn").addEventListener("click", function() {
+    let tripDate = document.getElementById("depDate").value;
+    console.log("You are departing on your trip on " + tripDate);
+    console.log("You are departing on your trip in " + timeToDep(tripDate) + " days!");
+});
 
 //export function
 export { timeToDep, todaysDate }
