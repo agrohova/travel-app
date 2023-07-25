@@ -91,14 +91,9 @@ async function getWeatherData(req, res) {
 async function getWeatherbitData(lat, lng) {
     const weatherbitURL = `${baseURL2}lat=${lat}&lon=${lng}&key=${apiKey2}`;
     try {
-        const response = await fetch(weatherbitURL);
-        
+        const response = await fetch(encodeURI(weatherbitURL));
         const data = await response.json();
-        return {
-            max_temp: data.data[0].max_temp,
-            min_temp: data.data[0].min_temp,
-            weather_description: data.data[0].weather.description
-        };
+        return data;
     } catch (error) {
         console.log('Weatherbit API response error:', error);
         throw error;

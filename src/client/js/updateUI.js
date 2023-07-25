@@ -39,15 +39,19 @@ async function getGeoData(city) {
         // Check if the response contains valid data
         if (data && data.lat !== undefined && data.lng !== undefined) {
             console.log('Geonames retrieved response: ', data);
-            return data;
-        } else {
-            console.log('Error retrieving data from getGeoData: Invalid response');
-            return null;
-        }
-    } catch (error) {
-        console.log('Error retrieving data from getGeoData: ', error);
-        return null;
-    }
+            
+           // Call the getWeatherData function with lat and lng parameters
+           const weatherData = await getWeatherData(data.lat, data.lng);
+           console.log('Weather data:', weatherData);
+           return weatherData;
+       } else {
+           console.log('Error retrieving data from getGeoData: Invalid response');
+           return null;
+       }
+   } catch (error) {
+       console.log('Error retrieving data from getGeoData: ', error);
+       return null;
+   }
 }
 
 /*
