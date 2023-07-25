@@ -59,7 +59,7 @@ async function getPic(geoNamesData){
     const city = geoNamesData.city;
     const country = geoNamesData.country;
 
-    return fetch(`/pixabay?city=${picCity}&country=${picCountry}`)
+    return fetch(`/pixabay?city=${city}&country=${country}`)
     .then(response => response.json())
     .then(data => {
         console.log('Pixabay retrieved response: ', data);
