@@ -37,7 +37,7 @@ async function getGeoData(req, res){
         console.log('You are travelling to: ', city);
         const result = await getGeoNamesData(city);
         console.log('Geonames API response: ', result);
-        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Accept', 'application/json');
 
         res.send(result);
         
@@ -50,7 +50,7 @@ async function getGeoData(req, res){
 async function getGeoNamesData(city){
     const geoNamesURL = `${baseURL1}q=${city}&maxRows=1&username=${userName1}`;
     try {
-        const response = await fetch(geoNamesURL);
+        const response = await fetch(encodeURI(geoNamesURL));
         const data = await response.json();
         if(data.geonames.length > 0){ //checking that API response is not empty
             return { //geo data inside an object

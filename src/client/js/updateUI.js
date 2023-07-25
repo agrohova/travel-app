@@ -28,10 +28,11 @@ async function tripInfo(event){
 //getting geo data from local endpoint
 async function getGeoData(city) {
     try {
-        const response = await fetch(`/geo?city=${city}`);
-        const headers = response.headers
-        const contentType = headers.get('Content-Type')
-        console.log('Content-Type:', contentType);
+        const response = await fetch(`http://localhost:4000/geo?city=${city}`, {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': "application/json" },
+        });
         const data = await response.json();
 
         // Check if the response contains valid data
@@ -60,8 +61,31 @@ async function getGeoData(city){
         console.log('Error retrieving data from getGeoData: ', error);
     })
 }*/
+
 //getting weather data from local endpoint
 
+async function getWeatherData(lat, lng) {
+    try {
+        const response = await fetch(`http://localhost:4000/weather?lat=${lat}&lng=${lng}`, {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (!response.ok) {
+            // Handle non-2xx status codes (e.g., 404, 500)
+            throw new Error('Network response was not ok.');
+        }
+
+        const data = await response.json();
+        console.log('Weatherbit retrieved response:', data);
+        return data;
+    } catch (error) {
+        console.log('Error retrieving data from getWeatherData:', error);
+        throw error;
+    }
+}
+/*
 async function getWeatherData(lat, lng){
     return fetch(`/weather?lat=${lat}&lng=${lng}`)
     .then(response => response.json())
@@ -72,10 +96,36 @@ async function getWeatherData(lat, lng){
     .catch(error => {
         console.log('Error retrieving data from getWeatherData: ', error);
     })
-}
+}*/
 
 //getting pixabay picture from local endpoint
 
+async function getPic(geonamesData) {
+    try {
+        const city = geonamesData.city;
+        const country = geonamesData.country;
+
+        const response = await fetch(`http://localhost:4000//pixabay?city=${city}&country=${country}`, {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (!response.ok) {
+            // Handle non-2xx status codes (e.g., 404, 500)
+            throw new Error('Network response was not ok.');
+        }
+
+        const data = await response.json();
+        console.log('Pixabay retrieved response:', data);
+        return data;
+    } catch (error) {
+        console.log('Error retrieving data from getPic:', error);
+        throw error;
+    }
+}
+
+/*
 async function getPic(geonamesData){
     const city = geonamesData.city;
     const country = geonamesData.country;
@@ -90,6 +140,7 @@ async function getPic(geonamesData){
         console.log('Error retrieving data from getPic: ', error);
     })
 }
+*/
 
 // Function to update the UI with trip information
 function updateUI(geonamesData, weatherbitData, pixabayData, tripCountdown) {
