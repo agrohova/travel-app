@@ -5,7 +5,7 @@ async function tripInfo(event){
     let geonamesData = {}; // hold the API data in a data object
     let pixabayData = {};
     let weatherbitData = {};
-    let timeInDays = '';
+    let timeInDays = timeToDep(tripDate);
     let city = document.getElementById('destCity').value; // taking user data from the UI
     let tripDate = document.getElementById('depDate').value;
 
@@ -13,8 +13,15 @@ async function tripInfo(event){
 
     try {
         geonamesData = await getGeoData(city); 
+        console.log('Geonames data:', geonamesData);
+
         weatherbitData = await getWeatherData(geonamesData.lat, geonamesData.lng); 
+        console.log('Weather data:', weatherbitData);
+
         pixabayData = await getPic(geonamesData.city, geonamesData.country);
+        console.log('Pixabay data:', pixabayData);
+
+        timeInDays = timeToDep(tripDate);
 
         updateUI(geonamesData, weatherbitData, pixabayData, timeInDays)
     } catch (error) {
@@ -127,10 +134,11 @@ document.getElementById("save-btn").addEventListener("click", function() {
     console.log("You are departing on your trip on " + tripDate);
     console.log("You are departing on your trip in " + timeToDep(tripDate) + " days!");
 });
+
 // Function to update the UI with trip information
 function updateUI(geonamesData, weatherbitData, pixabayData, timeInDays) {
     document.getElementById('tripCountdown').innerHTML = `You are departing on your trip in ${timeInDays} days`
-    document.getElementById('weatherInfo').innerHTML = `Weather in ${geonamesData.city},${geonamesData.country} might be like this: min. temperature: ${weatherbitData.min_temp}°C, max. temperature: ${weatherbitData.max_temp}°C, weather description: ${weatherbitData.weather_description}`;
+    document.getElementById('weatherInfo').innerHTML = `Weather in ${geonamesData.city},${geonamesData.country} might be like this: min. temperature: ${weatherbitData}°C, max. temperature: ${weatherbitData.max_temp}°C, weather description: ${weatherbitData.weather_description}`;
     document.getElementById('picInfo').innerHTML = `<img src="${pixabayData.imageURL}" alt="City Image">`;
 }
 
