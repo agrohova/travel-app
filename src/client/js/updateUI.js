@@ -23,7 +23,7 @@ async function tripInfo(event){
 
         timeInDays = timeToDep(tripDate);
 
-        updateUI(geonamesData, weatherbitData, pixabayData, timeInDays)
+        updateUI(weatherbitData, pixabayData, timeInDays)
     } catch (error) {
         console.log('Error in translating the trip info into the UI: ', error);
         return;
@@ -136,9 +136,9 @@ document.getElementById("save-btn").addEventListener("click", function() {
 });
 
 // Function to update the UI with trip information
-function updateUI(geonamesData, weatherbitData, pixabayData, timeInDays) {
+function updateUI(weatherbitData, pixabayData, timeInDays) {
     document.getElementById('tripCountdown').innerHTML = `You are departing on your trip in ${timeInDays} days`
-    document.getElementById('weatherInfo').innerHTML = `Weather in ${geonamesData.city},${geonamesData.country} might be like this: min. temperature: ${weatherbitData}°C, max. temperature: ${weatherbitData.max_temp}°C, weather description: ${weatherbitData.weather_description}`;
+    document.getElementById('weatherInfo').innerHTML = `Weather in ${weatherbitData.city},${weatherbitData.country} might be like this: min. temperature: ${weatherbitData}°C, max. temperature: ${weatherbitData.max_temp}°C, weather description: ${weatherbitData.weather_description}`;
     document.getElementById('picInfo').innerHTML = `<img src="${pixabayData.imageURL}" alt="City Image">`;
 }
 
