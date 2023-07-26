@@ -130,7 +130,7 @@ document.getElementById("save-btn").addEventListener("click", function() {
 // Function to update the UI with trip information
 function updateUI(geonamesData, weatherbitData, pixabayData, timeInDays) {
     document.getElementById('tripCountdown').innerHTML = `You are departing on your trip in ${timeInDays} days`
-    document.getElementById('weatherInfo').innerHTML = `Weather in ${geonamesData.city},${geonamesData.country} in the last 7 days: min. temperature: ${weatherbitData.min_temp}°C, max. temperature: ${weatherbitData.max_temp}°C, weather description: ${weatherbitData.weather_description}`;
+    document.getElementById('weatherInfo').innerHTML = `Weather in ${geonamesData.city},${geonamesData.country} might be like this: min. temperature: ${weatherbitData.min_temp}°C, max. temperature: ${weatherbitData.max_temp}°C, weather description: ${weatherbitData.weather_description}`;
     document.getElementById('picInfo').innerHTML = `<img src="${pixabayData.imageURL}" alt="City Image">`;
 }
 
