@@ -1,5 +1,3 @@
-import { timeToDep } from './tripCountdown'
-
 async function tripInfo(event){
 
     event.preventDefault(); // stop the app from doing its thing
@@ -17,7 +15,6 @@ async function tripInfo(event){
         geonamesData = await getGeoData(city); 
         weatherbitData = await getWeatherData(geonamesData.lat, geonamesData.lng); 
         pixabayData = await getPic(geonamesData.city, geonamesData.country);
-        tripCountdown = timeToDep(tripDate)
 
         updateUI(geonamesData, weatherbitData, pixabayData, timeInDays)
     } catch (error) {
@@ -101,7 +98,35 @@ async function getPic(city, country) {
         throw error;
     }
 }
+// function to obtain today's date
+function todaysDate() {
+    let now = new Date();
+    let day = now.getDate();
+    let month = now.getMonth() + 1; //January is 0, so we add +1 to match the normal calendar order
+    let year = now.getFullYear();
 
+    let today = day + "/" + month + "/" + year;
+
+    return today //this says what day is it today
+}
+console.log('today is ' + todaysDate());
+
+//function to obtain time to departure
+
+function timeToDep(tripDate) {
+    let dateFuture = new Date(tripDate);
+    let todayDate = new Date();
+    let dateDiff = dateFuture - todayDate;
+    let timeInDays = Math.ceil(dateDiff / (1000 * 60 * 60 * 24)); //time is in milliseconds, so therefore the math
+
+    return timeInDays //this says how many days do we have left till the departure
+}
+
+document.getElementById("save-btn").addEventListener("click", function() {
+    let tripDate = document.getElementById("depDate").value;
+    console.log("You are departing on your trip on " + tripDate);
+    console.log("You are departing on your trip in " + timeToDep(tripDate) + " days!");
+});
 // Function to update the UI with trip information
 function updateUI(geonamesData, weatherbitData, pixabayData, timeInDays) {
     document.getElementById('tripCountdown').innerHTML = `You are departing on your trip in ${timeInDays} days`
@@ -109,4 +134,4 @@ function updateUI(geonamesData, weatherbitData, pixabayData, timeInDays) {
     document.getElementById('picInfo').innerHTML = `<img src="${pixabayData.imageURL}" alt="City Image">`;
 }
 
-export { tripInfo, updateUI};
+export { tripInfo, updateUI, timeToDep};
