@@ -1,3 +1,5 @@
+import { clearElements } from './removeTrip'
+
 async function tripInfo(event){
 
     event.preventDefault(); // stop the app from doing its thing
@@ -106,6 +108,7 @@ async function getPic(city, country) {
         throw error;
     }
 }
+
 // function to obtain today's date
 function todaysDate() {
     let now = new Date();
@@ -178,5 +181,8 @@ document.getElementById('remove-btn').addEventListener('click', function () {
     });
 });
 
+//event listener to remove trip
 
-export { tripInfo, updateUI, timeToDep };
+document.getElementById('remove-btn').addEventListener('click', clearElements);
+
+export { tripInfo, todaysDate, timeToDep, updateUI };
