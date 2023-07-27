@@ -41,6 +41,8 @@ form {
     overflow: auto; 
     font-size: 18px;
     font-family: 'Oswald', sans-serif;
+    width: 80vw;
+    height: 60vh;
 }
 
 .hero {
@@ -63,6 +65,10 @@ footer {
     border-radius: 5px;
 }
 
+#save-btn:hover {
+    background-color: #86c6b9; 
+  }
+
 #remove-btn {
     font-family: 'Oswald', sans-serif;
     border: none;
@@ -70,19 +76,23 @@ footer {
     border-radius: 5px;
 }
 
+#remove-btn:hover {
+    background-color: #86c6b9; 
+  }
+
 @media screen and (max-width: 768px) {
     /* Apply new styles for mobile devices here */
 
     .tripInfo {
         display: flex;
-        width: 100vw;
+        width: 80vw;
         height: 60vh;
         padding: 5px;
         padding-bottom: 10px;
     }
 
     img {
-        width: 100vw; /* Set the width to 100 viewport width units */
+        width: 90vw; /* Set the width to 100 viewport width units */
         height: auto;
     }
 }
