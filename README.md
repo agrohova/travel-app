@@ -3,7 +3,7 @@
 This is the final project of the Front End Web Developer Nanodegree program offered by Udacity. The goal of this project is to build a web tool that allows users to calculate remaining time until their trip, review weather forecast for their destination and get a destination picture. 
 
 Note: Extend your Project Further - voluntary addition
-As a voluntary addition, I chose following: Pull in an image for the country from Pixabay API when the entered location brings up no results (good for obscure localities).
+As a voluntary addition, I chose following: Allow the user to remove the trip.
 
 ## How to Run the App
 
@@ -83,4 +83,4 @@ The project includes service workers for offline functionality. The Workbox plug
 
 ## Interactions
 
-The app includes a form for date and destination input. When you click on "save trip", you'll generate the trip info and the destination picture. The delete trip button is there but is not wired to any functionality, as this was not obligatory.
+The app includes a form for date and destination input. When you click on "save trip", you'll generate the trip info and the destination picture. When you click on "delete trip", the form "Trip info" will be emptied and the destination foto will be deleted.

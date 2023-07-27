@@ -12,7 +12,7 @@ async function tripInfo(event){
     try {
         const { geonamesData, weatherData } = await getGeoData(city); 
         console.log('Geonames data:', geonamesData);
-        console.log('Weather data: weatherData');
+        console.log('Weather data:', weatherData);
 
         pixabayData = await getPic(geonamesData.city, geonamesData.country);
         console.log('Pixabay data:', pixabayData);
@@ -38,7 +38,6 @@ async function getGeoData(city) {
 
         // Check if the response contains valid data
         if (data && data.lat !== undefined && data.lng !== undefined) {
-            console.log('Geonames retrieved response: ', data);
             
            // Call the getWeatherData function with lat and lng parameters
            const weatherbitData = await getWeatherData(data.lat, data.lng);
@@ -71,8 +70,13 @@ async function getWeatherData(lat, lng) {
         }
 
         const data = await response.json();
-        console.log('Weatherbit retrieved response:', data);
-        return data;
+
+        return {
+            min_temp: data.data[0].min_temp,
+            max_temp: data.data[0].max_temp,
+            weather_description: data.data[0].weather.description,
+        };
+
     } catch (error) {
         console.log('Error retrieving data from getWeatherData:', error);
         throw error;
@@ -95,7 +99,7 @@ async function getPic(city, country) {
         }
 
         const data = await response.json();
-        console.log('Pixabay retrieved response:', data);
+
         return data;
     } catch (error) {
         console.log('Error retrieving data from getPic:', error);
@@ -135,8 +139,44 @@ document.getElementById("save-btn").addEventListener("click", function() {
 // Function to update the UI with trip information
 function updateUI(geonamesData, weatherData, pixabayData, timeInDays) {
     document.getElementById('tripCountdown').innerHTML = `You are departing to ${geonamesData.city} in ${timeInDays} days`
-    document.getElementById('weatherInfo').innerHTML = `Weather in ${geonamesData.city}, ${geonamesData.country} might be like this: min. temperature: ${weatherData.min_temp}°C, max. temperature: ${weatherData.max_temp}°C, weather description: ${weatherData.weather_description}`;
+    document.getElementById('weatherInfo').innerHTML = `Weather in ${geonamesData.city}, ${geonamesData.country} might be like this: `;
+    
+    const weatherInfoList = document.getElementById('weatherDetails');
+    weatherInfoList.innerHTML = ''; // Clear previous content
+
+    // Create list items for weather data
+    const weatherListItems = [
+        `Min. Temperature: ${weatherData.min_temp}°C`,
+        `Max. Temperature: ${weatherData.max_temp}°C`,
+        `Weather Description: ${weatherData.weather_description}`
+    ];
+
+    // Append list items to the unordered list
+    weatherListItems.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        weatherInfoList.appendChild(li);
+    });
+    
     document.getElementById('picInfo').innerHTML = `<img src="${pixabayData.imageURL}" alt="City Image">`;
 }
 
-export { tripInfo, updateUI, timeToDep};
+document.getElementById('remove-btn').addEventListener('click', function () {
+
+    const elementsToEmpty = [
+      'tripCountdown',
+      'cityInfo',
+      'weatherInfo',
+      'weatherDetails',
+      'picInfo'
+    ];
+  
+    // for each element, empty the inner HTML
+    elementsToEmpty.forEach(elementId => {
+      const element = document.getElementById(elementId);
+      element.innerHTML = '';
+    });
+});
+
+
+export { tripInfo, updateUI, timeToDep };
