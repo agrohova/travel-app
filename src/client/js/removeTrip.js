@@ -1,4 +1,4 @@
-function clearElements() {
+function clearElements(document) {
   const elementsToEmpty = [
     'tripCountdown',
     'cityInfo',
