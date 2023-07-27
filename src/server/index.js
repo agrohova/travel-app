@@ -15,9 +15,9 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "../../dist")));
 
 // designates what port the app will listen to for incoming requests
-app.listen(4000, function () {
-  console.log('Example app listening on port 4000!')
-})
+const server = app.listen(4000, function () {
+    console.log('Example app listening on port 4000!')
+});
 
 //define HTTP GET route
 
@@ -151,4 +151,4 @@ async function getPixabayData(city, country){
 
 //exports
 
-module.exports = { app };
+module.exports = { app, server };
