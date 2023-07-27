@@ -2,28 +2,24 @@ async function tripInfo(event){
 
     event.preventDefault(); // stop the app from doing its thing
 
-    let geonamesData = {}; // hold the API data in a data object
-    let pixabayData = {};
-    let weatherbitData = {};
     let timeInDays = timeToDep(tripDate);
     let city = document.getElementById('destCity').value; // taking user data from the UI
     let tripDate = document.getElementById('depDate').value;
+    let pixabayData = {}
 
     console.log(`Retrieved from the UI: destination city: ${city}, departure date: ${tripDate}`);
 
     try {
-        geonamesData = await getGeoData(city); 
+        const { geonamesData, weatherData } = await getGeoData(city); 
         console.log('Geonames data:', geonamesData);
-
-        weatherbitData = await getWeatherData(geonamesData.lat, geonamesData.lng); 
-        console.log('Weather data:', weatherbitData);
+        console.log('Weather data: weatherData');
 
         pixabayData = await getPic(geonamesData.city, geonamesData.country);
         console.log('Pixabay data:', pixabayData);
 
         timeInDays = timeToDep(tripDate);
 
-        updateUI(weatherbitData, pixabayData, timeInDays)
+        updateUI(weatherData, pixabayData, timeInDays)
     } catch (error) {
         console.log('Error in translating the trip info into the UI: ', error);
         return;
@@ -47,7 +43,8 @@ async function getGeoData(city) {
            // Call the getWeatherData function with lat and lng parameters
            const weatherbitData = await getWeatherData(data.lat, data.lng);
            console.log('Weather data:', weatherbitData);
-           return weatherbitData;
+           return { geonamesData: data, weatherData: weatherbitData };
+           
        } else {
            console.log('Error retrieving data from getGeoData: Invalid response');
            return null;
@@ -136,9 +133,9 @@ document.getElementById("save-btn").addEventListener("click", function() {
 });
 
 // Function to update the UI with trip information
-function updateUI(weatherbitData, pixabayData, timeInDays) {
+function updateUI(weatherData, pixabayData, timeInDays) {
     document.getElementById('tripCountdown').innerHTML = `You are departing on your trip in ${timeInDays} days`
-    document.getElementById('weatherInfo').innerHTML = `Weather in ${weatherbitData.city},${weatherbitData.country} might be like this: min. temperature: ${weatherbitData}°C, max. temperature: ${weatherbitData.max_temp}°C, weather description: ${weatherbitData.weather_description}`;
+    document.getElementById('weatherInfo').innerHTML = `Weather in ${weatherData.city},${weatherData.country} might be like this: min. temperature: ${weatherData.min_temp}°C, max. temperature: ${weatherData.max_temp}°C, weather description: ${weatherData.weather_description}`;
     document.getElementById('picInfo').innerHTML = `<img src="${pixabayData.imageURL}" alt="City Image">`;
 }
 
